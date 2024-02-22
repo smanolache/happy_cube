@@ -18,12 +18,12 @@ main(int argc, char *argv[]) {
 	// 	std::cout << b << std::endl;
 
 	// 'Watt' from the paper
-	// const Brick b1(std::vector<unsigned int>{0, 2, 4, 7, 8, 10, 13, 15});
-	// const Brick b2(std::vector<unsigned int>{0, 1, 3, 4, 6, 9, 11, 14, 15});
-	// const Brick b3(std::vector<unsigned int>{0, 2, 6, 8, 10, 11, 12, 13, 15});
-	// const Brick b4(std::vector<unsigned int>{0, 2, 4, 7, 8, 9, 11, 12, 13, 15});
-	// const Brick b5(std::vector<unsigned int>{0, 2, 5, 7, 8, 9, 11, 12, 14});
-	// const Brick b6(std::vector<unsigned int>{2, 4, 5, 7, 10, 13, 15});
+	// const Brick b1(std::vector<unsigned int>{0,    2,    4,       7, 8,    10,         13,     15});
+	// const Brick b2(std::vector<unsigned int>{0, 1,    3, 4,    6,       9,     11,         14, 15});
+	// const Brick b3(std::vector<unsigned int>{0,    2,          6,    8,    10, 11, 12, 13,     15});
+	// const Brick b4(std::vector<unsigned int>{0,    2,    4,       7, 8, 9,     11, 12, 13,     15});
+	// const Brick b5(std::vector<unsigned int>{0,    2,       5,    7, 8, 9,     11, 12,     14    });
+	// const Brick b6(std::vector<unsigned int>{      2,    4, 5,    7,       10,         13,     15});
 
 	// 'violet' from the game
 	// const Brick b1(std::vector<unsigned int>{0, 1,       4, 5, 6,       9,     11, 12, 13        });

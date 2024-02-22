@@ -181,23 +181,6 @@ Solution::assemble(const Brick& b1, const Brick& b2, const Brick& b3,
 		return s;
 	}
 
-	if (foundation.worth_flipping()) {
-		// flip the foundation
-		BrickB foundation2(foundation.t(6));
-		unsigned int orientation = 0;
-		for (; orientation < foundation.degree(); ++orientation)
-			if (foundation2 == foundation.brick(orientation))
-				break;
-		Algorithm alg(bricks, orientation);
-		if (alg.assemble()) {
-			Solution s;
-			std::vector<BO> solution(std::move(alg).result());
-			for (const BO& e: solution)
-				s.emplace_back(std::cref(bricks[e.brick()].get().brick(e.orientation())));
-			return s;
-		}
-	}
-
 	return Solution();
 }
 
