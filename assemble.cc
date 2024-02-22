@@ -184,10 +184,6 @@ Solution::assemble(const Brick& b1, const Brick& b2, const Brick& b3,
 	return Solution();
 }
 
-
-// so: if top() returned true => we remove all orientations
-//        of the chosen brick from available
-
 bool
 Algorithm::assemble() {
 	// available contains all bricks and orientations except
