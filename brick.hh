@@ -162,7 +162,6 @@ Side::cmp(const Side& other) const noexcept {
 	if (__li != i)
 		return ORD::partial_ordering::greater;
 	return __lj != j ? ORD::partial_ordering::less : ORD::partial_ordering::equivalent;
-	return ORD::partial_ordering::equivalent;
 }
 #endif
 
