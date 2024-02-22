@@ -171,7 +171,6 @@ Solution::assemble(const Brick& b1, const Brick& b2, const Brick& b3,
 			  return b1 < b2;
 		  });
 
-	const Brick& foundation = bricks.front();
 	Algorithm alg(bricks, 0);
 	if (alg.assemble()) {
 		Solution s;
