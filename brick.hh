@@ -1,8 +1,8 @@
 #pragma once
 
+#include <array>
 #include <vector>
 #include <ostream>
-#include <set>
 #include <cassert>
 #if !defined(__cpp_impl_three_way_comparison) || __cpp_impl_three_way_comparison < 201907L
 #include "compare.hpp"
@@ -13,21 +13,26 @@
 
 namespace happy_cube {
 
-class Side: protected std::vector<unsigned int> {
+class Side: protected std::array<bool, 5> {
 private:
-	typedef std::vector<unsigned int> base_type;
+	typedef std::array<bool, 5> base_type;
 
 public:
 	using base_type::base_type;
-	using base_type::empty;
-	using base_type::size;
 	using base_type::front;
 	using base_type::back;
+	using base_type::operator[];
 
 	Side(base_type&&) noexcept;
 	Side& operator=(base_type&&) noexcept;
 
-	Side flip() const;
+	Side flip() const noexcept;
+
+	bool valid() const noexcept;
+
+	bool match(const Side&) const noexcept;
+
+	static bool corner(bool, bool, bool) noexcept;
 
 	bool operator<(const Side&) const noexcept;
 	bool operator>(const Side&) const noexcept;
@@ -123,13 +128,29 @@ Side::Side(base_type&& v) noexcept
 {
 }
 
+inline bool
+Side::match(const Side& other) const noexcept {
+	return (operator[](1) ^ other[1]) &&
+		(operator[](2) ^ other[2]) &&
+		(operator[](3) ^ other[3]) &&
+		!(operator[](0) && other[0]) &&
+		!(operator[](4) && other[4]);
+}
+
+inline bool
+Side::corner(bool a, bool b, bool c) noexcept {
+	return (!a && (b ^ c)) || (a && !b && !c);
+}
+
 #if defined(__cpp_impl_three_way_comparison) && __cpp_impl_three_way_comparison >= 201907L
 inline std::partial_ordering
 Side::operator<=>(const Side& other) const noexcept {
+	return static_cast<const base_type&>(*this) <=>
+		static_cast<const base_type&>(other);
+}
 #else
 inline ORD::partial_ordering
 Side::cmp(const Side& other) const noexcept {
-#endif
 	const_iterator i = begin(), __li = end(),
 		j = other.begin(), __lj = other.end();
 	for (; __li != i && __lj != j; ++i, ++j) {
@@ -141,11 +162,14 @@ Side::cmp(const Side& other) const noexcept {
 	if (__li != i)
 		return ORD::partial_ordering::greater;
 	return __lj != j ? ORD::partial_ordering::less : ORD::partial_ordering::equivalent;
+	return ORD::partial_ordering::equivalent;
 }
+#endif
 
 inline bool
 Side::operator<(const Side& other) const noexcept {
-	return static_cast<const base_type&>(*this) < static_cast<const base_type&>(other);
+	return static_cast<const base_type&>(*this) <
+		static_cast<const base_type&>(other);
 }
 
 inline bool
@@ -165,7 +189,8 @@ Side::operator>=(const Side& other) const noexcept {
 
 inline bool
 Side::operator==(const Side& other) const noexcept {
-	return static_cast<const base_type&>(*this) == static_cast<const base_type&>(other);
+	return static_cast<const base_type&>(*this) ==
+		static_cast<const base_type&>(other);
 }
 
 inline bool
@@ -202,13 +227,17 @@ inline BrickB
 BrickB::t(unsigned int n) const {
 	switch (n) {
 	case 7: // flip on the main diagonal
-		return BrickB(left().flip(), bottom().flip(), right().flip(), top().flip());
+		return BrickB(left().flip(), bottom().flip(),
+			      right().flip(), top().flip());
 	case 6: // flip vertically
-		return BrickB(bottom().flip(), right().flip(), top().flip(), left().flip());
+		return BrickB(bottom().flip(), right().flip(),
+			      top().flip(), left().flip());
 	case 5: // flip on the anti diagonal
-		return BrickB(right().flip(), top().flip(), left().flip(), bottom().flip());
+		return BrickB(right().flip(), top().flip(),
+			      left().flip(), bottom().flip());
 	case 4: // flip horizontally
-		return BrickB(top().flip(), left().flip(), bottom().flip(), right().flip());
+		return BrickB(top().flip(), left().flip(),
+			      bottom().flip(), right().flip());
 	case 3: // rotate 90° counter-clockwise
 		return BrickB(right(), bottom(), left(), top());
 	case 2: // rotate 180°
@@ -318,14 +347,12 @@ BrickB::operator!=(const BrickB& other) const noexcept {
 
 inline bool
 BrickB::valid() const noexcept {
-	return !top().empty() && !right().empty() &&
-		!bottom().empty() && !left().empty() &&
-		5 != top().size() && 5 != right().size() &&
-		5 != bottom().size() && 5 != left().size() &&
-		!(1 == top().front() && 3 == left().back()) &&
-		!(1 == right().front() && 3 == top().back()) &&
-		!(1 == bottom().front() && 3 == right().back()) &&
-		!(1 == left().front() && 3 == bottom().back());
+	return top().valid() && right().valid() &&
+		bottom().valid() && left().valid() &&
+		!(top()[0]    && !top()[1]    && !left()[3]) &&
+		!(right()[0]  && !right()[1]  && !top()[3]) &&
+		!(bottom()[0] && !bottom()[1] && !right()[3]) &&
+		!(left()[0]   && !left()[1]   && !bottom()[3]);
 }
 
 template<typename S1, typename S2, typename S3, typename S4>
@@ -432,7 +459,8 @@ extern std::ostream& operator<<(std::ostream&, const Side&);
 inline std::ostream&
 operator<<(std::ostream& os, const Brick& b) {
 	os << '(' << b.top() << ", " << b.right() << ", " << b.bottom()
-	   << ", " << b.left() << "): " << b.degree() << "; " << b.worth_flipping();
+	   << ", " << b.left() << "): " << b.degree() << "; "
+	   << b.worth_flipping();
 	return os;
 }
 
