@@ -26,12 +26,20 @@ main(int argc, char *argv[]) {
 	// const Brick b6(std::vector<unsigned int>{2, 4, 5, 7, 10, 13, 15});
 
 	// 'violet' from the game
-	const Brick b1(std::vector<unsigned int>{0, 1,       4, 5, 6,       9,     11, 12, 13        });
-	const Brick b2(std::vector<unsigned int>{   1,    3,       6, 7, 8, 9,         12, 13, 14    });
-	const Brick b3(std::vector<unsigned int>{0,    2,    4, 5, 6,          10, 11, 12,     14    });
-	const Brick b4(std::vector<unsigned int>{0,    2,    4,    6,       9, 10,         13,     15});
-	const Brick b5(std::vector<unsigned int>{      2, 3, 4,    6,    8, 9,         12, 13        });
-	const Brick b6(std::vector<unsigned int>{0, 1,          5,    7, 8, 9,         12, 13    , 15});
+	// const Brick b1(std::vector<unsigned int>{0, 1,       4, 5, 6,       9,     11, 12, 13        });
+	// const Brick b2(std::vector<unsigned int>{   1,    3,       6, 7, 8, 9,         12, 13, 14    });
+	// const Brick b3(std::vector<unsigned int>{0,    2,    4, 5, 6,          10, 11, 12,     14    });
+	// const Brick b4(std::vector<unsigned int>{0,    2,    4,    6,       9, 10,         13,     15});
+	// const Brick b5(std::vector<unsigned int>{      2, 3, 4,    6,    8, 9,         12, 13        });
+	// const Brick b6(std::vector<unsigned int>{0, 1,          5,    7, 8, 9,         12, 13    , 15});
+
+	// 'red' from the game
+	const Brick b1(std::vector<unsigned int>{0, 1,    3, 4,       7, 8, 9,     11,             15});
+	const Brick b2(std::vector<unsigned int>{      2, 3, 4, 5,    7, 8,    10, 11, 12,     14    });
+	const Brick b3(std::vector<unsigned int>{   1,          5,    7, 8, 9,     11, 12, 13, 14    });
+	const Brick b4(std::vector<unsigned int>{0, 1,    3, 4,    6,    8, 9, 10,             14    });
+	const Brick b5(std::vector<unsigned int>{      2,    4, 5,          9,     11,         14    });
+	const Brick b6(std::vector<unsigned int>{0,       3, 4,    6,    8,    10,     12,     14, 15});
 
 	std::cout << "Input:" << std::endl;
 	std::cout << b1 << std::endl;
